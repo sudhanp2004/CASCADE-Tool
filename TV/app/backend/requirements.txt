@@ -1,0 +1,11 @@
+Flask==3.1.1
+requests==2.34.2
+numpy==1.26.4
+spacy==3.8.14
+textstat==0.7.13
+scikit-learn==1.8.0
+
+# en_core_web_sm is not on PyPI as a plain package; tv_engine.py auto-downloads
+# it via `python -m spacy download en_core_web_sm` on first run if missing.
+# Pin used in this environment (install directly if you want it pre-baked):
+# en_core_web_sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.8.0/en_core_web_sm-3.8.0-py3-none-any.whl

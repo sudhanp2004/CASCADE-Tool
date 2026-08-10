@@ -33,6 +33,17 @@ def test_get_datasets_returns_all_four_with_expected_fields():
         assert d["test_total"] == d["test_jailbreak"] + d["test_safe"]
 
 
+def test_embedder_status_returns_boolean_ok_field():
+    client = app_module.app.test_client()
+    resp = client.get("/api/embedder_status")
+    assert resp.status_code == 200
+    data = resp.get_json()
+    assert "ok" in data
+    assert isinstance(data["ok"], bool)
+    # The embedder isn't running in the test environment, so this should be
+    # False here — but the important thing this test guards is the shape.
+
+
 def test_demo_stream_unknown_dataset_returns_single_error_event():
     client = app_module.app.test_client()
     resp = client.get("/api/demo/stream?dataset=doesnotexist&label=any")

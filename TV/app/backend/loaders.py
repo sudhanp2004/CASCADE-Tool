@@ -79,14 +79,16 @@ def parse_anthropic_row(row):
     return {"turns": turns, "ground_truth": ground_truth}
 
 
-def _load_anthropic_file(path):
+def _load_anthropic_file(path, split_name):
     rows = json.load(open(path))
     out = []
     skipped = 0
     for i, row in enumerate(rows):
         parsed = parse_anthropic_row(row)
         if parsed is not None:
-            parsed["id"] = f"anthropic-{i}"
+            # split_name included so ids are unique across train AND test,
+            # not just within whichever file they came from.
+            parsed["id"] = f"anthropic-{split_name}-{i}"
             out.append(parsed)
         else:
             skipped += 1
@@ -95,8 +97,8 @@ def _load_anthropic_file(path):
 
 
 def load_anthropic():
-    train = _load_anthropic_file(os.path.join(DATASETS_DIR, "anthropic", "train.json"))
-    test = _load_anthropic_file(os.path.join(DATASETS_DIR, "anthropic", "test.json"))
+    train = _load_anthropic_file(os.path.join(DATASETS_DIR, "anthropic", "train.json"), "train")
+    test = _load_anthropic_file(os.path.join(DATASETS_DIR, "anthropic", "test.json"), "test")
     return {"train": train, "test": test}
 
 
@@ -117,14 +119,16 @@ def parse_tomgibbs_row(row):
         return None
 
 
-def _load_tomgibbs_file(path):
+def _load_tomgibbs_file(path, split_name):
     rows = json.load(open(path))
     out = []
     skipped = 0
     for i, row in enumerate(rows):
         parsed = parse_tomgibbs_row(row)
         if parsed is not None:
-            parsed["id"] = f"tomgibbs-{i}"
+            # split_name included so ids are unique across train AND test,
+            # not just within whichever file they came from.
+            parsed["id"] = f"tomgibbs-{split_name}-{i}"
             out.append(parsed)
         else:
             skipped += 1
@@ -133,8 +137,8 @@ def _load_tomgibbs_file(path):
 
 
 def load_tomgibbs():
-    train = _load_tomgibbs_file(os.path.join(DATASETS_DIR, "tomgibbs", "train.json"))
-    test = _load_tomgibbs_file(os.path.join(DATASETS_DIR, "tomgibbs", "test.json"))
+    train = _load_tomgibbs_file(os.path.join(DATASETS_DIR, "tomgibbs", "train.json"), "train")
+    test = _load_tomgibbs_file(os.path.join(DATASETS_DIR, "tomgibbs", "test.json"), "test")
     return {"train": train, "test": test}
 
 
@@ -160,6 +164,8 @@ def load_safemtdata():
     for i, row in enumerate(rows):
         p = parse_safemtdata_row(row)
         if p is not None:
+            # id assigned here from a single global sequential index, BEFORE
+            # the train/test split below — already unique across both splits.
             p["id"] = f"safemtdata-{i}"
             parsed.append(p)
         else:

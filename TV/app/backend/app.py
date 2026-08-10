@@ -22,25 +22,38 @@ app = Flask(
 
 DATASET_INDEX = loaders.get_dataset_index()
 
+EMBEDDER_URL = "http://127.0.0.1:5001/similarity"
+
+
+def is_embedder_healthy():
+    """Pings the embedder microservice. Returns True/False — never raises.
+
+    Used both by the startup auto-launcher and by /api/embedder_status so the
+    frontend can detect a down embedder instead of silently getting a biased
+    s_e_hat=0.5 out of tv_engine.calculate_metrics()'s fallback."""
+    try:
+        requests.post(EMBEDDER_URL, json={"text": "test"}, timeout=1)
+        return True
+    except requests.exceptions.RequestException:
+        return False
+
 
 def ensure_embedder_service():
-    embedder_url = "http://127.0.0.1:5001/similarity"
-    try:
-        requests.post(embedder_url, json={"text": "test"}, timeout=1)
+    if is_embedder_healthy():
         print("[*] Embedder microservice is already running.")
         return
-    except requests.exceptions.RequestException:
-        print("[*] Embedder microservice not detected. Starting it now...")
-        embedder_path = os.path.join(TV_DIR, "embedder_service.py")
-        subprocess.Popen([sys.executable, embedder_path], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        for _ in range(30):
-            try:
-                requests.post(embedder_url, json={"text": "test"}, timeout=1)
-                print("[*] Embedder microservice successfully started on port 5001.")
-                return
-            except requests.exceptions.RequestException:
-                time.sleep(1)
-        print("[!] Warning: Embedder microservice failed to start within 30 seconds.")
+
+    print("[*] Embedder microservice not detected. Starting it now...")
+    embedder_path = os.path.join(TV_DIR, "embedder_service.py")
+    log_path = os.path.join(BACKEND_DIR, "embedder.log")
+    log_file = open(log_path, "a")
+    subprocess.Popen([sys.executable, embedder_path], stdout=log_file, stderr=log_file)
+    for _ in range(30):
+        if is_embedder_healthy():
+            print("[*] Embedder microservice successfully started on port 5001.")
+            return
+        time.sleep(1)
+    print(f"[!] Warning: Embedder microservice failed to start within 30 seconds. See {log_path} for details.")
 
 
 @app.route("/")
@@ -64,6 +77,11 @@ def get_datasets():
             "test_safe": n_safe,
         })
     return jsonify(result)
+
+
+@app.route("/api/embedder_status", methods=["GET"])
+def embedder_status():
+    return jsonify({"ok": is_embedder_healthy()})
 
 
 @app.route("/api/demo/stream", methods=["GET"])
@@ -121,4 +139,8 @@ def demo_stream():
 
 if __name__ == "__main__":
     ensure_embedder_service()
-    app.run(host="0.0.0.0", port=5050, debug=True)
+    # 127.0.0.1 (not 0.0.0.0) + debug=False: this is a live-demo tool, not
+    # meant to expose the Werkzeug interactive debugger on the network, and
+    # debug's reloader would otherwise double-load the dataset index (~230MB)
+    # into memory on startup.
+    app.run(host="127.0.0.1", port=5050, debug=False)

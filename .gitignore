@@ -18,3 +18,6 @@ __pycache__/
 
 # Superpowers subagent-driven-development scratch workspace
 .superpowers/
+
+# TV demo app: embedder subprocess log (runtime artifact)
+TV/app/backend/embedder.log

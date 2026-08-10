@@ -32,6 +32,10 @@
                 <button id="start-btn" class="btn primary" style="margin-top: 1rem;">Start</button>
             </div>
 
+            <div id="embedder-warning" class="embedder-warning hidden">
+                ⚠ Embedder service unavailable — TV scores are degraded (semantic alignment defaults to a neutral bias, not zero)
+            </div>
+
             <div class="panel section-telemetry">
                 <h3>Live Telemetry</h3>
                 <div class="metric-block gauge-block">
@@ -45,13 +49,21 @@
             </div>
 
             <div class="panel section-result hidden" id="result-panel">
-                <h3>Result</h3>
+                <h3>
+                    Result
+                    <span class="info-tooltip" title="This app shows TV's live, blind verdict: it flags the first turn where TV crosses the threshold, with no lookahead and no knowledge of the label. This is stricter than the accuracy numbers in sandbox_data/TV_Threshold_Test_Report.md, which use a label-aware N-1/N measurement (the label is known in advance to pick which turn to check). A verdict here that looks 'wrong' relative to the report is often this discrepancy, not a bug.">ⓘ</span>
+                </h3>
                 <div class="judge-block" id="verdict-block">
                     <span id="verdict-text">--</span>
                 </div>
                 <div class="small-text" style="margin-top: 0.75rem;">
                     <div>TV predicted: <span id="predicted-label">--</span></div>
                     <div>Ground truth: <span id="ground-truth-label">--</span></div>
+                </div>
+                <div class="small-text metric-breakdown" style="margin-top: 0.75rem;">
+                    <div>Semantic alignment: <span id="metric-emb">--</span></div>
+                    <div>Info density: <span id="metric-info">--</span></div>
+                    <div>Refusal gate: <span id="metric-hedge">--</span></div>
                 </div>
             </div>
         </div>
