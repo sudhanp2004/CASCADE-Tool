@@ -53,8 +53,13 @@ function appendBubble(role) {
 
 function appendDivider(text, color) {
     const divider = document.createElement('div');
-    divider.style = `text-align: center; color: ${color}; margin: 20px 0; border-bottom: 1px solid ${color}; line-height: 0.1em;`;
-    divider.innerHTML = `<span style="background: #0f1115; padding: 0 15px; font-size: 0.85em; font-weight: bold; letter-spacing: 1px;">${text}</span>`;
+    divider.style.cssText = `text-align: center; color: ${color}; margin: 20px 0; border-bottom: 1px solid ${color}; line-height: 0.1em;`;
+
+    const span = document.createElement('span');
+    span.style.cssText = "background: #0f1115; padding: 0 15px; font-size: 0.85em; font-weight: bold; letter-spacing: 1px;";
+    span.textContent = text;
+
+    divider.appendChild(span);
     chatWindow.appendChild(divider);
     chatWindow.scrollTop = chatWindow.scrollHeight;
 }
