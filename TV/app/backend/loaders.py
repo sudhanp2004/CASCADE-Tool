@@ -136,3 +136,85 @@ def load_tomgibbs():
     train = _load_tomgibbs_file(os.path.join(DATASETS_DIR, "tomgibbs", "train.json"))
     test = _load_tomgibbs_file(os.path.join(DATASETS_DIR, "tomgibbs", "test.json"))
     return {"train": train, "test": test}
+
+
+# --- SafeMTData ---
+
+def parse_safemtdata_row(row):
+    conv = row.get("conversations", [])
+    turns = [{"role": _normalize_role(m.get("role")), "text": m.get("content", "")} for m in conv]
+    assistant_turns = [t["text"] for t in turns if t["role"] == "assistant"]
+    if len(assistant_turns) <= 1:
+        return None
+
+    ground_truth = "safe" if check_if_refused(assistant_turns[-1]) else "jailbreak"
+    return {"turns": turns, "ground_truth": ground_truth}
+
+
+def load_safemtdata():
+    path = os.path.join(DATASETS_DIR, "safemtdata", "SafeMTData_1K.json")
+    rows = json.load(open(path))
+
+    parsed = []
+    skipped = 0
+    for i, row in enumerate(rows):
+        p = parse_safemtdata_row(row)
+        if p is not None:
+            p["id"] = f"safemtdata-{i}"
+            parsed.append(p)
+        else:
+            skipped += 1
+    print(f"[loaders] safemtdata: {len(parsed)} loaded, {skipped} skipped")
+
+    labels = [1 if p["ground_truth"] == "jailbreak" else 0 for p in parsed]
+    train, test = train_test_split(parsed, test_size=0.2, random_state=42, stratify=labels)
+    return {"train": train, "test": test}
+
+
+# --- CoSafe ---
+
+def parse_cosafe_row(row):
+    """Returns a list of examples, one per rollout: {'turns', 'ground_truth'}."""
+    history_raw = row.get("conversation", [])
+    history = [{"role": _normalize_role(m.get("role")), "text": m.get("content", "")} for m in history_raw]
+
+    rollouts = row.get("model_rollouts", [])
+    rewards = row.get("rewards", [])
+
+    examples = []
+    for rollout_text, reward in zip(rollouts, rewards):
+        turns = history + [{"role": "assistant", "text": rollout_text}]
+        ground_truth = "safe" if reward == 1 else "jailbreak"
+        examples.append({"turns": turns, "ground_truth": ground_truth})
+    return examples
+
+
+def load_cosafe():
+    path = os.path.join(DATASETS_DIR, "cosafe", "cosafe_all_rollouts_guardgen.json")
+    rows = json.load(open(path))
+
+    # Row-level label for stratification, matching evaluate_cosafe.py:
+    # a row counts as "has an unsafe rollout" if any reward == 0.
+    row_labels = [1 if 0 in row.get("rewards", []) else 0 for row in rows]
+    train_rows, test_rows = train_test_split(
+        rows, test_size=0.2, random_state=42, stratify=row_labels
+    )
+
+    def expand(rows_subset, split_name):
+        out = []
+        skipped = 0
+        for i, row in enumerate(rows_subset):
+            try:
+                examples = parse_cosafe_row(row)
+            except Exception:
+                examples = []
+            if not examples:
+                skipped += 1
+                continue
+            for j, ex in enumerate(examples):
+                ex["id"] = f"cosafe-{split_name}-{i}-{j}"
+                out.append(ex)
+        print(f"[loaders] cosafe {split_name}: {len(out)} examples loaded, {skipped} rows skipped")
+        return out
+
+    return {"train": expand(train_rows, "train"), "test": expand(test_rows, "test")}
