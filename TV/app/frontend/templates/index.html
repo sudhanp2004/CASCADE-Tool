@@ -1,2 +1,61 @@
 <!DOCTYPE html>
-<html><head><title>TV Demo</title></head><body>placeholder</body></html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trust Vector — Live Demo</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="dashboard">
+        <div class="pane chat-pane">
+            <div class="chat-header">
+                <h2>Conversation Replay</h2>
+                <span id="turn-counter">Turn: 0</span>
+            </div>
+            <div id="chat-window" class="chat-window"></div>
+        </div>
+
+        <div class="pane command-pane">
+            <div class="panel section-dataset">
+                <h3>Dataset</h3>
+                <select id="dataset-select"></select>
+                <div id="dataset-info" class="small-text" style="margin: 0.5rem 0;"></div>
+
+                <h3 style="margin-top: 1rem;">Label Filter</h3>
+                <select id="label-select">
+                    <option value="any">Any</option>
+                    <option value="jailbreak">Force Jailbreak Example</option>
+                    <option value="safe">Force Safe Example</option>
+                </select>
+
+                <button id="start-btn" class="btn primary" style="margin-top: 1rem;">Start</button>
+            </div>
+
+            <div class="panel section-telemetry">
+                <h3>Live Telemetry</h3>
+                <div class="metric-block gauge-block">
+                    <div class="gauge-header">
+                        <span>Trust Vector</span>
+                        <span id="tv-value">0.00</span>
+                    </div>
+                    <div class="progress-bar"><div id="tv-fill" class="fill" style="width: 0%"></div></div>
+                    <div class="small-text" id="threshold-label" style="margin-top: 0.25rem;">Threshold: --</div>
+                </div>
+            </div>
+
+            <div class="panel section-result hidden" id="result-panel">
+                <h3>Result</h3>
+                <div class="judge-block" id="verdict-block">
+                    <span id="verdict-text">--</span>
+                </div>
+                <div class="small-text" style="margin-top: 0.75rem;">
+                    <div>TV predicted: <span id="predicted-label">--</span></div>
+                    <div>Ground truth: <span id="ground-truth-label">--</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='js/demo.js') }}"></script>
+</body>
+</html>
