@@ -148,3 +148,36 @@ def test_parse_cosafe_row_expands_one_example_per_rollout():
 def test_parse_cosafe_row_returns_empty_list_when_no_rollouts():
     row = {"conversation": [], "model_rollouts": [], "rewards": []}
     assert loaders.parse_cosafe_row(row) == []
+
+
+# --- get_dataset_index / pick_conversation (integration, real files) ---
+
+def test_get_dataset_index_loads_all_four_datasets_with_thresholds():
+    index = loaders.get_dataset_index()
+    assert set(index.keys()) == {"anthropic", "tomgibbs", "safemtdata", "cosafe"}
+    for key, data in index.items():
+        assert data["threshold"] == loaders.DATASET_THRESHOLDS[key]
+        assert data["name"] == loaders.DATASET_NAMES[key]
+        assert len(data["train"]) > 0
+        assert len(data["test"]) > 0
+        for record in data["test"][:5]:
+            assert "turns" in record
+            assert record["ground_truth"] in ("jailbreak", "safe")
+
+
+def test_pick_conversation_any_returns_a_record():
+    index = loaders.get_dataset_index()
+    result = loaders.pick_conversation(index, "anthropic", "any")
+    assert result is not None
+    assert "turns" in result
+
+
+def test_pick_conversation_respects_label_filter():
+    index = loaders.get_dataset_index()
+    result = loaders.pick_conversation(index, "anthropic", "jailbreak")
+    assert result["ground_truth"] == "jailbreak"
+
+
+def test_pick_conversation_returns_none_for_unknown_label_with_no_matches():
+    index = {"fake": {"test": [{"turns": [], "ground_truth": "safe"}]}}
+    assert loaders.pick_conversation(index, "fake", "jailbreak") is None

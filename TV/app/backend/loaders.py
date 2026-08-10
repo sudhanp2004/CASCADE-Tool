@@ -218,3 +218,39 @@ def load_cosafe():
         return out
 
     return {"train": expand(train_rows, "train"), "test": expand(test_rows, "test")}
+
+
+LOADERS = {
+    "anthropic": load_anthropic,
+    "tomgibbs": load_tomgibbs,
+    "safemtdata": load_safemtdata,
+    "cosafe": load_cosafe,
+}
+
+
+def get_dataset_index():
+    """Loads all 4 datasets. Returns {key: {"train", "test", "threshold", "name"}}.
+    A dataset is silently excluded if its source file(s) are missing."""
+    index = {}
+    for key, loader_fn in LOADERS.items():
+        try:
+            data = loader_fn()
+        except FileNotFoundError as e:
+            print(f"[loaders] Skipping '{key}': {e}")
+            continue
+        data["threshold"] = DATASET_THRESHOLDS[key]
+        data["name"] = DATASET_NAMES[key]
+        index[key] = data
+    return index
+
+
+def pick_conversation(index, dataset_key, label_filter):
+    """Returns a random matching record from index[dataset_key]['test'], or None."""
+    test_convs = index[dataset_key]["test"]
+    if label_filter in ("jailbreak", "safe"):
+        candidates = [c for c in test_convs if c["ground_truth"] == label_filter]
+    else:
+        candidates = test_convs
+    if not candidates:
+        return None
+    return random.choice(candidates)
