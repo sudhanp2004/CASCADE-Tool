@@ -13,7 +13,7 @@ Output only the benign request, one sentence."""
 
 def main():
     g = pd.read_parquet(os.path.join(HERE, "..", "tv_gen", "final", "tv_gen.parquet"))[["goal_index", "goal"]].drop_duplicates().sort_values("goal_index")
-    c = GroqClient(load_keys(), os.path.join(D, "cache.jsonl"))
+    c = GroqClient(load_keys(), os.path.join(D, "cache.jsonl"), rounds=10)
     rows = [{"goal_index": int(r.goal_index), "harmful_goal": r.goal,
              "benign_goal": c.chat("openai/gpt-oss-120b", [{"role": "user", "content": PROMPT.format(goal=r.goal)}], max_tokens=120, temperature=0).strip().strip('"'),
              "approved": ""} for r in g.itertuples()]

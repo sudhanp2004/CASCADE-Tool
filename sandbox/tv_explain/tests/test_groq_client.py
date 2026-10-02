@@ -48,3 +48,11 @@ def test_salt_changes_cache_key(tmp_path):
     assert c.chat("m", [{"role": "user", "content": "x"}], salt="1") == "a"
     assert c.chat("m", [{"role": "user", "content": "x"}], salt="2") == "b"
     assert len(calls) == 2
+
+def test_extra_rounds_wait_out_rate_limits(tmp_path):
+    calls, slept = [], []
+    resp = [(429, None)] * 6 + [ok("late")]
+    c = GroqClient(["k1", "k2"], str(tmp_path / "c.jsonl"), post=lambda k, p: (calls.append(k), resp.pop(0))[1],
+                   sleep=slept.append, rounds=2, round_wait=20)
+    assert c.chat("m", [{"role": "user", "content": "x"}]) == "late"
+    assert 20 in slept

@@ -18,9 +18,10 @@ def _http_post(key, payload):
     return r.status_code, (r.json() if r.status_code == 200 else None)
 
 class GroqClient:
-    def __init__(self, keys, cache_path, post=_http_post, sleep=time.sleep):
+    def __init__(self, keys, cache_path, post=_http_post, sleep=time.sleep, rounds=1, round_wait=30):
         assert keys, "no Groq keys"
         self.keys, self.post, self.sleep, self.i = list(keys), post, sleep, 0
+        self.rounds, self.round_wait = rounds, round_wait
         self.cache_path, self.cache, self.lock = cache_path, {}, threading.Lock()
         if os.path.exists(cache_path):
             for line in open(cache_path):
@@ -33,7 +34,9 @@ class GroqClient:
         k = hashlib.sha256(json.dumps([payload, salt], sort_keys=True).encode()).hexdigest()
         if k in self.cache:
             return self.cache[k]
-        for _ in range(len(self.keys) * 3):
+        for n in range(len(self.keys) * 3 * self.rounds):
+            if n and n % (len(self.keys) * 3) == 0:
+                self.sleep(self.round_wait)              # every key failed this round: wait out the per-minute limit
             with self.lock:
                 key = self.keys[self.i % len(self.keys)]
             try:
@@ -55,4 +58,4 @@ class GroqClient:
                 with self.lock: self.i += 1
                 self.sleep(1); continue
             self.sleep(2)
-        raise GroqExhausted(f"{model}: no non-empty reply after {len(self.keys) * 3} tries")
+        raise GroqExhausted(f"{model}: no non-empty reply after {len(self.keys) * 3 * self.rounds} tries")
