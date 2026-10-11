@@ -1,0 +1,29 @@
+CLEAN RERUN — only true compliances and safety refusals (MTJ left out, not yet verified)
+
+KEEP RULE APPLIED (read = hand-checked by Claude, request+reply only, random order, TV/PR never shown)
+  tv_gen   openai/gpt-oss-20b   comply read    50 of    756 | in scope 100.0% -> keep all | kept   756
+  tv_gen   openai/gpt-oss-20b   refuse read   509 of    509 | in scope 98.8% -> keep all | kept   503
+  tv_gen   qwen/qwen3.8-27b     comply read    50 of    863 | in scope 98.0% -> keep all | kept   862
+  tv_gen   qwen/qwen3.8-27b     refuse read   355 of    355 | in scope 93.0% -> keep verified only | kept   330
+  DEF CON  pooled, up to 8 LLMs comply read   150 of  43204 | in scope 91.3% -> keep verified only | kept   137
+  DEF CON  pooled, up to 8 LLMs refuse read   200 of  35517 | in scope 61.0% -> keep verified only | kept   122
+
+MAIN TABLE — 20 repeated grouped 5-fold splits; balanced accuracy mean [min-max]
+  dataset  LLM                      n later refus. comply |            rule all        logistic all |          rule later      habit-PR later | AUROC later: PR / TV / both
+  tv_gen   openai/gpt-oss-20b    1259  1059    495    60% | 0.823 [0.812-0.828] 0.907 [0.899-0.911] | 0.905 [0.898-0.908] 0.900 [0.892-0.904] | 0.818 / 0.897 / 0.959
+  tv_gen   qwen/qwen3.8-27b      1193   999    319    72% | 0.701 [0.659-0.714] 0.798 [0.781-0.810] | 0.784 [0.756-0.791] 0.866 [0.858-0.870] | 0.841 / 0.732 / 0.855
+  DEF CON  pooled, up to 8 LLMs   263   200     93    52% | 0.685 [0.670-0.686] 0.655 [0.637-0.675] | 0.732 [0.714-0.741] 0.791 [0.786-0.798] | 0.673 / 0.757 / 0.795
+  LMSYS    claude-1               667   523     46    91% | 0.813 [0.793-0.823] 0.859 [0.845-0.876] | 0.824 [0.792-0.836] 0.848 [0.827-0.858] | 0.795 / 0.890 / 0.909
+  LMSYS    gpt-3.5-turbo          621   491     44    91% | 0.758 [0.737-0.773] 0.804 [0.775-0.844] | 0.734 [0.701-0.752] 0.799 [0.768-0.820] | 0.644 / 0.779 / 0.800
+  LMSYS    gpt-4                 1231  1059     52    95% | 0.753 [0.734-0.765] 0.753 [0.719-0.805] | 0.766 [0.753-0.781] 0.799 [0.776-0.810] | 0.758 / 0.813 / 0.859
+  LMSYS    llama-2-13b-chat       994   718     43    94% | 0.694 [0.658-0.713] 0.797 [0.769-0.815] | 0.755 [0.735-0.778] 0.745 [0.704-0.772] | 0.761 / 0.790 / 0.851
+
+TWO FACTORS (later decisions, held-out logistic AUROC; paired cluster bootstrap over groups, Holm)
+  dataset  LLM                      n     PR     TV   both |  TV adds       p |  PR adds       p
+  tv_gen   openai/gpt-oss-20b    1059  0.818  0.897  0.959 |   +0.141   0.000 |   +0.062   0.000
+  tv_gen   qwen/qwen3.8-27b       999  0.841  0.732  0.855 |   +0.014   0.121 |   +0.123   0.000
+  DEF CON  pooled, up to 8 LLMs   200  0.673  0.757  0.795 |   +0.122   0.000 |   +0.038   0.392
+  LMSYS    claude-1               523  0.795  0.890  0.909 |   +0.114   0.000 |   +0.019   0.417
+  LMSYS    gpt-3.5-turbo          491  0.644  0.779  0.800 |   +0.155   0.008 |   +0.021   0.568
+  LMSYS    gpt-4                 1059  0.758  0.813  0.859 |   +0.101   0.024 |   +0.046   0.417
+  LMSYS    llama-2-13b-chat       718  0.761  0.790  0.851 |   +0.090   0.018 |   +0.061   0.185
