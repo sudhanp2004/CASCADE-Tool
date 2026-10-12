@@ -10,7 +10,7 @@ nb = {"__file__": os.path.join(TT, "eval_baseline.py")}
 exec(open(os.path.join(TT, "eval_baseline.py")).read().split("cas = pd.read_parquet")[0], nb); gate, FIX = nb["gate"], nb["FIX"]
 PARTS = os.path.join(HERE, "parts"); os.makedirs(PARTS, exist_ok=True)
 CHUNK = 4000
-_nlp = spacy.load("en_core_web_sm", disable=["parser", "ner", "lemmatizer", "attribute_ruler"])
+_nlp = spacy.load("en_core_web_sm", disable=["parser", "ner", "lemmatizer"])
 _nlp.max_length = 200000
 CONTENT = {"NOUN", "PROPN", "VERB", "ADJ", "ADV"}
 def i_d_batch(texts):

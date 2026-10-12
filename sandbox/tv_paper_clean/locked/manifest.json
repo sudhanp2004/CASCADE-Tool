@@ -51,10 +51,11 @@
    "dataset": "Geometry",
    "model": "Llama-3.1-8B-Instruct",
    "n_per_class": 52,
-   "auroc": 0.834,
-   "threshold_at_90pct_sensitivity": 0.433,
-   "safe_below_threshold": 0.615,
-   "file": "Geometry__Llama_3.1_8B_Instruct.csv"
+   "auroc": 0.817,
+   "threshold_at_90pct_sensitivity": 0.769,
+   "safe_below_threshold": 0.577,
+   "file": "Geometry__Llama_3.1_8B_Instruct.csv",
+   "note": "TV corrected 2026-10-12 (earlier scorer disabled spaCy attribute_ruler, breaking I_D)"
   }
  ]
 }
