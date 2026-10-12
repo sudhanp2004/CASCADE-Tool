@@ -1,0 +1,5 @@
+ANTHROPIC, refined TV-fit selection (safe: refused before screen point; JB: cooperating at screen point)
+  context distillation 13B       n/class   47 | AUROC 0.811 [0.723,0.897] | bal.acc 0.745 caught 70% left alone 79% | TV JB 0.651 safe 0.378
+  context distillation 2.7B      n/class   28 | AUROC 0.818 [0.699,0.917] | bal.acc 0.607 caught 68% left alone 54% | TV JB 0.671 safe 0.361
+  context distillation 52B       n/class  737 | AUROC 0.830 [0.809,0.850] | bal.acc 0.735 caught 75% left alone 72% | TV JB 0.651 safe 0.314
+  hand-checked 400 (all models)  n/class   60 | AUROC 0.859 [0.785,0.920] | bal.acc 0.783 caught 83% left alone 73% | TV JB 0.675 safe 0.320

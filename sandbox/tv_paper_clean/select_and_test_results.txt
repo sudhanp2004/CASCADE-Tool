@@ -1,0 +1,8 @@
+TV-FIT SELECTION, balanced, symmetric screening point (TV-only early warning)
+  dataset    model                        n/class |        AUROC [95% CI] | bal.acc caught left alone | mean TV JB / safe
+  Geometry   Gemma-2-9B-it                too few (safe-fit 11, JB 2816)
+  Geometry   Llama-3.1-8B-Instruct            182 | 0.701 [0.648, 0.752] |   0.613    74%        49% | 0.494 / 0.393
+  Geometry   Qwen2.5-7B-Instruct          too few (safe-fit 1, JB 1781)
+  Anthropic  context distillation 13B          61 | 0.748 [0.650, 0.826] |   0.680    80%        56% | 0.633 / 0.428
+  Anthropic  context distillation 2.7B         34 | 0.721 [0.590, 0.832] |   0.632    74%        53% | 0.650 / 0.418
+  Anthropic  context distillation 52B         782 | 0.766 [0.742, 0.789] |   0.694    65%        74% | 0.619 / 0.367

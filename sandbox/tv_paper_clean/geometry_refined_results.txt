@@ -1,0 +1,21 @@
+  model                    variant                    n/class AUROC  bal.acc caught left-alone
+  Gemma-2-9B-it            earlier rule               too few (safe 11, JB 2816)
+  Gemma-2-9B-it            refined                    too few (safe 6, JB 2816)
+  Gemma-2-9B-it            refined + reply>=10w       too few (safe 6, JB 2816)
+  Gemma-2-9B-it            refined + confident        too few (safe 3, JB 1401)
+  Gemma-2-9B-it            refined + both             too few (safe 3, JB 1401)
+  Llama-3.1-8B-Instruct    earlier rule                  182 0.701  0.613    74%    49%
+  Llama-3.1-8B-Instruct    refined                        52 0.834  0.712    88%    54%
+  Llama-3.1-8B-Instruct    refined + reply>=10w           47 0.810  0.734    70%    77%
+  Llama-3.1-8B-Instruct    refined + confident        too few (safe 14, JB 1199)
+  Llama-3.1-8B-Instruct    refined + both             too few (safe 13, JB 1199)
+  Qwen2.5-7B-Instruct      earlier rule               too few (safe 1, JB 1781)
+  Qwen2.5-7B-Instruct      refined                    too few (safe 0, JB 1781)
+  Qwen2.5-7B-Instruct      refined + reply>=10w       too few (safe 0, JB 1781)
+  Qwen2.5-7B-Instruct      refined + confident        too few (safe 0, JB 1122)
+  Qwen2.5-7B-Instruct      refined + both             too few (safe 0, JB 1122)
+  ALL models pooled        earlier rule                  194 0.642  0.570    78%    36%
+  ALL models pooled        refined                        58 0.733  0.698    98%    41%
+  ALL models pooled        refined + reply>=10w           53 0.728  0.670    92%    42%
+  ALL models pooled        refined + confident            17 0.761  0.618    71%    53%
+  ALL models pooled        refined + both                 16 0.699  0.562    75%    38%

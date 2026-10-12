@@ -1,0 +1,6 @@
+EARLY WARNING — TV alone, Anthropic red-team (turn-matched)
+  ALL candidates                   JB  956 safe-pts 12309 | AUROC 0.639 | sens@10%FA  20% | mean TV JB 0.623 safe 0.523
+  hand-checked 400                 JB  200 safe-pts   743 | AUROC 0.670 | sens@10%FA  24% | mean TV JB 0.634 safe 0.505
+  context distillation 13B         JB   89 safe-pts   840 | AUROC 0.613 | sens@10%FA  17% | mean TV JB 0.635 safe 0.564
+  context distillation 2.7B        JB   85 safe-pts   530 | AUROC 0.619 | sens@10%FA  26% | mean TV JB 0.646 safe 0.574
+  context distillation 52B         JB  782 safe-pts 10799 | AUROC 0.640 | sens@10%FA  19% | mean TV JB 0.619 safe 0.517

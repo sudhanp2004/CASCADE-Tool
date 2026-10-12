@@ -1,0 +1,4 @@
+TV-FIT SELECTION, balanced, symmetric screen point — tv_gen
+  model                  n/class |        AUROC [95% CI] | bal.acc caught left alone | mean TV JB / safe
+  openai/gpt-oss-20b          52 | 0.948 [0.895, 0.990] |   0.913    94%        88% | 0.834 / 0.095   (safe-fit 83, JB 52)
+  qwen/qwen3.8-27b            16 | 0.891 [0.738, 1.000] |   0.844    94%        75% | 0.860 / 0.546   (safe-fit 16, JB 17)
