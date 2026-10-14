@@ -1,0 +1,18 @@
+{
+ "id": "battlecon/tv-sdp-a",
+ "title": "tv-sdp-a",
+ "code_file": "run_all.py",
+ "language": "python",
+ "kernel_type": "script",
+ "is_private": true,
+ "enable_gpu": true,
+ "enable_tpu": false,
+ "enable_internet": true,
+ "dataset_sources": [
+  "battlecon/tv-sdp-a-in"
+ ],
+ "kernel_sources": [],
+ "competition_sources": [],
+ "model_sources": [],
+ "machine_shape": "NvidiaTeslaT4"
+}

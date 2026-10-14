@@ -39,3 +39,25 @@ sandbox/tv_paper_clean/geo_tv.parquet
 sandbox/tv_paper_clean/parts/
 sandbox/tv_paper_clean/*_tv.parquet
 sandbox/tv_paper_clean/*.log
+sandbox/datasets/safemtdata/
+sandbox/safedream_h2h/*.jsonl
+sandbox/safedream_h2h/out*/
+# SafeDream head-to-head / victim replays (2026-10-14): replies, labels, conversation text, tokens and API caches stay local
+sandbox/safedream_h2h/out_*/
+sandbox/safedream_h2h/ds_*/
+sandbox/safedream_h2h/bc/ds_*/
+sandbox/safedream_h2h/*.jsonl
+sandbox/safedream_h2h/*.log
+sandbox/safedream_llama/out_*/
+sandbox/safedream_llama/ds_*/
+sandbox/safedream_llama/*.log
+sandbox/safedream_gptoss/out/
+sandbox/safedream_gptoss/*.jsonl
+sandbox/safedream_gptoss/*.log
+sandbox/tv_paper_clean/causal_cache_groq.jsonl
+sandbox/tv_paper_clean/causal_rewrites*.parquet
+sandbox/tv_paper_clean/locked_requests.parquet
+sandbox/tv_paper_clean/kaggle_pr/ds/
+sandbox/tv_paper_clean/kaggle_pr/out/*.npy
+sandbox/tv_paper_clean/pr_cache/
+sandbox/tv_paper_clean/*.log

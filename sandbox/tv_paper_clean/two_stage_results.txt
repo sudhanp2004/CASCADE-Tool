@@ -1,0 +1,44 @@
+TWO-STAGE THEORY on the LOCKED TV-only sets. Stage 1: TV < thr (90% sens) -> safe. Stage 2 (above thr): jailbreak iff TV - PR > c.
+PR = perceived risk of the next user request (frozen WildGuardMix method; WildGuardMix test AUROC 0.9057). Per LLM.
+
+== tv_gen · openai/gpt-oss-20b  (n 51/51; no next request: 0; PR leak cos>=.9: 0)
+  PR of next request: JB mean 0.399 | safe mean 0.491 | AUROC of -PR on whole set 0.581
+  above threshold 0.762: JB 46, safe 5
+    AUROC   TV 0.509 | -PR 0.261 | TV-PR 0.278
+    CV bal  TV 0.428 | -PR 0.443 | TV-PR 0.443
+  whole set: AUROC TV-only 0.945 vs two-stage 0.882 | CV bal TV-only 0.931 vs two-stage 0.902
+
+== tv_gen · qwen/qwen3.8-27b  (n 15/15; no next request: 0; PR leak cos>=.9: 0)
+  PR of next request: JB mean 0.312 | safe mean 0.465 | AUROC of -PR on whole set 0.644
+  above threshold 0.794: JB 13, safe 3
+    AUROC   TV 0.487 | -PR 0.410 | TV-PR 0.410
+    CV bal  TV 0.487 | -PR 0.513 | TV-PR 0.513
+  whole set: AUROC TV-only 0.880 vs two-stage 0.818 | CV bal TV-only 0.800 vs two-stage 0.833
+
+== Anthropic · context distillation 13B  (n 47/47; no next request: 0; PR leak cos>=.9: 1)
+  PR of next request: JB mean 0.450 | safe mean 0.578 | AUROC of -PR on whole set 0.584
+  above threshold 0.474: JB 42, safe 24
+    AUROC   TV 0.720 | -PR 0.539 | TV-PR 0.608
+    CV bal  TV 0.679 | -PR 0.515 | TV-PR 0.530
+  whole set: AUROC TV-only 0.811 vs two-stage 0.741 | CV bal TV-only 0.745 vs two-stage 0.713
+
+== Anthropic · context distillation 2.7B  (n 28/28; no next request: 0; PR leak cos>=.9: 1)
+  PR of next request: JB mean 0.383 | safe mean 0.597 | AUROC of -PR on whole set 0.601
+  above threshold 0.468: JB 25, safe 14
+    AUROC   TV 0.631 | -PR 0.623 | TV-PR 0.660
+    CV bal  TV 0.709 | -PR 0.601 | TV-PR 0.641
+  whole set: AUROC TV-only 0.779 vs two-stage 0.768 | CV bal TV-only 0.679 vs two-stage 0.625
+
+== Anthropic · context distillation 52B  (n 737/736; no next request: 1; PR leak cos>=.9: 107)
+  PR of next request: JB mean 0.504 | safe mean 0.483 | AUROC of -PR on whole set 0.487
+  above threshold 0.449: JB 663, safe 310
+    AUROC   TV 0.675 | -PR 0.469 | TV-PR 0.521
+    CV bal  TV 0.641 | -PR 0.501 | TV-PR 0.527
+  whole set: AUROC TV-only 0.830 vs two-stage 0.747 | CV bal TV-only 0.738 vs two-stage 0.738
+
+== Geometry · Llama-3.1-8B-Instruct  (n 52/52; no next request: 0; PR leak cos>=.9: 0)
+  PR of next request: JB mean 0.336 | safe mean 0.331 | AUROC of -PR on whole set 0.518
+  above threshold 0.769: JB 46, safe 22
+    AUROC   TV 0.644 | -PR 0.511 | TV-PR 0.558
+    CV bal  TV 0.666 | -PR 0.494 | TV-PR 0.595
+  whole set: AUROC TV-only 0.817 vs two-stage 0.753 | CV bal TV-only 0.750 vs two-stage 0.731

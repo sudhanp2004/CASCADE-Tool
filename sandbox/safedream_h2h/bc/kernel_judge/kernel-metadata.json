@@ -1,0 +1,4 @@
+{"id": "battlecon/tv-sd-judge", "title": "tv-sd-judge", "code_file": "judge_sd.py", "language": "python", "kernel_type": "script",
+ "is_private": true, "enable_gpu": true, "enable_tpu": false, "enable_internet": true,
+ "dataset_sources": ["battlecon/tv-sd-replay-out"], "kernel_sources": [], "competition_sources": [], "model_sources": [],
+ "machine_shape": "NvidiaTeslaT4"}

@@ -1,0 +1,11 @@
+USER VARIANT: 0.6 S_E + 0.4 I_D - gate  vs current gate x (0.6 S_E + 0.4 I_D). Per set.
+set                                    | CURRENT AUROC bal  | SE+ID-gate AUROC bal  | mean score JB / safe (variant)
+tv_gen · openai/gpt-oss-20b            | 0.945 0.931        | 0.087 0.480           | -0.128 / +0.125
+tv_gen · qwen/qwen3.8-27b              | 0.880 0.800        | 0.151 0.433           | -0.116 / +0.128
+Anthropic · context distillation 13B   | 0.811 0.745        | 0.388 0.532           | -0.349 / -0.072
+Anthropic · context distillation 2.7B  | 0.779 0.679        | 0.287 0.375           | -0.353 / -0.039
+Anthropic · context distillation 52B   | 0.830 0.741        | 0.342 0.501           | -0.344 / -0.021
+Geometry · Llama-3.1-8B-Instruct       | 0.817 0.750        | 0.413 0.558           | -0.122 / +0.045
+Llama-3.1-8B · SafeDialBench           | 0.914 0.875        | 0.107 0.486           | -0.257 / +0.044
+Llama-3.1-8B · SafeMTData              | 0.886 0.868        | 0.116 0.500           | -0.220 / +0.050
+Llama-3.1-8B · XGuard-Train            | 0.874 0.870        | 0.108 0.491           | -0.256 / +0.054

@@ -1,0 +1,4 @@
+{"id": "sudhanp2004/tv-sd-replay-twins", "title": "tv-sd-replay-twins", "code_file": "replay.py", "language": "python", "kernel_type": "script",
+ "is_private": true, "enable_gpu": true, "enable_tpu": false, "enable_internet": true,
+ "dataset_sources": ["sudhanp2004/tv-sd-twins-in"], "kernel_sources": [], "competition_sources": [], "model_sources": [],
+ "machine_shape": "NvidiaTeslaT4"}

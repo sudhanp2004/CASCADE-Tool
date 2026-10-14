@@ -1,0 +1,4 @@
+{"id": "sudhanp2004/tv-pr-locked", "title": "tv-pr-locked", "code_file": "pr_locked.py", "language": "python", "kernel_type": "script",
+ "is_private": true, "enable_gpu": true, "enable_tpu": false, "enable_internet": true,
+ "dataset_sources": ["sudhanp2004/tv-pr-ctx-texts", "sudhanp2004/tv-locked-requests"], "kernel_sources": [], "competition_sources": [], "model_sources": [],
+ "machine_shape": "NvidiaTeslaT4"}

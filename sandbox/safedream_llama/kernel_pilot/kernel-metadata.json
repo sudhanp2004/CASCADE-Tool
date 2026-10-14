@@ -1,0 +1,18 @@
+{
+ "id": "battlecon/tv-sdl-pilot",
+ "title": "tv-sdl-pilot",
+ "code_file": "run_all.py",
+ "language": "python",
+ "kernel_type": "script",
+ "is_private": true,
+ "enable_gpu": true,
+ "enable_tpu": false,
+ "enable_internet": true,
+ "dataset_sources": [
+  "battlecon/tv-sdl-pilot-in"
+ ],
+ "kernel_sources": [],
+ "competition_sources": [],
+ "model_sources": [],
+ "machine_shape": "NvidiaTeslaT4"
+}
