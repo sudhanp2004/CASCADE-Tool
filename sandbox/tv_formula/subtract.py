@@ -8,7 +8,7 @@ import os, sys, json
 import numpy as np, pandas as pd
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import StratifiedKFold
-HERE = os.path.dirname(os.path.abspath(__file__)); SB = os.path.dirname(HERE)
+HERE = OUTDIR = os.path.dirname(os.path.abspath(__file__)); SB = os.path.dirname(HERE)
 CP = os.path.join(HERE, "components.parquet")
 if os.path.exists(CP): C = pd.read_parquet(CP)
 else:
@@ -48,4 +48,4 @@ for name, g in C.groupby("set", sort=False):
     part = ((g.gate > 0) & (g.gate < 1)).mean()
     out.append(f"{name[:38]:38s} {int(y.sum()):5d} | {a[0]:.3f} {a[1]:.3f} {a[2]:4.0%} {a[3]:6.1%}    | {b[0]:.3f} {b[1]:.3f} {b[2]:4.0%} {b[3]:6.1%}   | {part:.0%}")
 out.append(f"\nsanity: max |MULT - locked TV| over locked sets = {max(chk):.4f}")
-txt = "\n".join(out); print(txt); open(os.path.join(HERE, "subtract_results.txt"), "w").write(txt + "\n")
+txt = "\n".join(out); print(txt); open(os.path.join(OUTDIR, "subtract_results.txt"), "w").write(txt + "\n")

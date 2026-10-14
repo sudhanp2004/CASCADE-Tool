@@ -1,0 +1,13 @@
+FORMULA ABLATION: refusal gate as MULTIPLIER (current) vs SUBTRACTOR (0.6 S_E + 0.4 I_D - (1-gate)). Per set.
+set                                    n/cls | MULT AUROC  bal  spec   NPV  | SUB AUROC  bal  spec   NPV   | partial-gate share
+tv_gen · openai/gpt-oss-20b               51 | 0.945 0.931  90%  95.6%    | 0.945 0.931  90%  95.6%   | 4%
+tv_gen · qwen/qwen3.8-27b                 15 | 0.880 0.800  80%  98.2%    | 0.880 0.800  80%  98.2%   | 53%
+Anthropic · context distillation 13B      47 | 0.811 0.745  49%  92.0%    | 0.813 0.745  49%  92.0%   | 12%
+Anthropic · context distillation 2.7B     28 | 0.779 0.679  50%  88.5%    | 0.781 0.679  50%  88.5%   | 11%
+Anthropic · context distillation 52B     737 | 0.830 0.741  58%  95.5%    | 0.830 0.744  58%  95.5%   | 8%
+Geometry · Llama-3.1-8B-Instruct          52 | 0.817 0.750  58%  85.3%    | 0.813 0.731  58%  85.3%   | 16%
+Llama-3.1-8B · SafeDialBench              36 | 0.914 0.875  78%  92.6%    | 0.917 0.875  78%  92.6%   | 7%
+Llama-3.1-8B · SafeMTData                 19 | 0.886 0.868  79%  97.5%    | 0.886 0.868  79%  97.5%   | 5%
+Llama-3.1-8B · XGuard-Train               54 | 0.874 0.870  76%  98.0%    | 0.874 0.870  76%  98.0%   | 13%
+
+sanity: max |MULT - locked TV| over locked sets = 0.0000
